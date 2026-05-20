@@ -37,13 +37,13 @@ void ShowInfo(Shader &s);
 void GetDesktopResolution(float& horizontal, float& vertical)
 {
 	RECT desktop;
-	// Get a handle to the desktop window
+	// Lấy handle của cửa sổ desktop
 	const HWND hDesktop = GetDesktopWindow();
-	// Get the size of screen to the variable desktop
+	// Lấy kích thước màn hình và lưu vào biến desktop
 	GetWindowRect(hDesktop, &desktop);
-	// The top left corner will have coordinates (0,0)
-	// and the bottom right corner will have coordinates
-	// (horizontal, vertical)
+	// Góc trên cùng bên trái sẽ có tọa độ là (0,0)
+    // và góc dưới cùng bên phải sẽ có tọa độ là
+    // (chiều ngang, chiều dọc)
 	horizontal = desktop.right;
 	vertical = desktop.bottom;
 	
@@ -93,10 +93,10 @@ bool firstMouse = true;
 GLfloat xoff = 0.0f, yoff = 0.0f;
 
 struct Character {
-	GLuint TextureID;   // ID handle of the glyph texture
-	glm::ivec2 Size;    // Size of glyph
-	glm::ivec2 Bearing;  // Offset from baseline to left/top of glyph
-	GLuint Advance;    // Horizontal offset to advance to next glyph
+	GLuint TextureID;    // ID handle của texture ký tự
+	glm::ivec2 Size;     // Kích thước của ký tự
+	glm::ivec2 Bearing;  // Khoảng cách (offset) từ đường chuẩn (baseline) đến cạnh trái/trên của ký tự
+	GLuint Advance;      // Khoảng cách dịch chuyển theo chiều ngang để tiến tới ký tự tiếp theo
 };
 std::map<wchar_t, Character> Characters;
 GLuint textVAO, textVBO;
@@ -152,7 +152,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 }
 
 int main() {
-	GetDesktopResolution(SCREEN_WIDTH, SCREEN_HEIGHT); // get resolution for create window
+	GetDesktopResolution(SCREEN_WIDTH, SCREEN_HEIGHT); // Lấy độ phân giản của màn hình để tạo cửa sổ
 	camera.LookAtPos = point;
 
 	/* GLFW INIT */
@@ -164,7 +164,12 @@ int main() {
 	/* GLFW INIT */
 
 	/* GLFW WINDOW CREATION */
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", glfwGetPrimaryMonitor(), NULL);
+	/*Full màn hình*/
+	//GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", glfwGetPrimaryMonitor(), NULL);
+
+	/*Chế độ cửa sổ*/
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
+
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -862,7 +867,7 @@ int main() {
 		/* PLANET TRACKING + SHOW INFO OF PLANET */
 
 
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+		// glfw: hoán đổi bộ đệm và thăm dò các sự kiện I/O (phím được nhấn/nhả, chuột di chuyển, v.v.)
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
 		glfwPollEvents();

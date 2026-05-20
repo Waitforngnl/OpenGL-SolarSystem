@@ -24,6 +24,7 @@
 #include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <locale>
 
 #define TAU (M_PI * 2.0)
 
@@ -152,6 +153,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 }
 
 int main() {
+	std::locale::global(std::locale(""));
 	GetDesktopResolution(SCREEN_WIDTH, SCREEN_HEIGHT); // Lấy độ phân giản của màn hình để tạo cửa sổ
 	camera.LookAtPos = point;
 
@@ -201,7 +203,7 @@ int main() {
 
 	FT_Face face;
 	//if (FT_New_Face(ft, "fonts/ff.otf", 0, &face))
-	if (FT_New_Face(ft, "fonts/Roboto-Regular.ttf", 0, &face))
+	if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
 	// Set size to load glyphs as
@@ -211,7 +213,8 @@ int main() {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	// Load first 128 characters of ASCII set
-	for (wchar_t c = 0; c < 8000; c++)
+	//for (wchar_t c = 0; c < 8000; c++)
+	for (wchar_t c = 0; c < 65535; c++)
 	{
 		// Load character glyph 
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
@@ -593,8 +596,7 @@ int main() {
 		model_earth = glm::rotate(model_earth, (GLfloat)glfwGetTime() * glm::radians(-33.25f) * 2.0f, glm::vec3(0.0f, 0.0f, 1.f));
 		camera.LookAtPos = glm::vec3(model_earth[3][0], model_earth[3][1], model_earth[3][2]);
 		SimpleShader.setMat4("model", model_earth);
-		Earth.Draw();  
-		
+		Earth.Draw();
 		/* EARTH */
 		
 		/* MOON */
@@ -850,7 +852,7 @@ int main() {
 		case 0:
 			view = camera.GetViewMatrix();
 
-			RenderText(TextShader, L"HE MAT TROI ", 25.0f, SCREEN_HEIGHT - 30.0f, 0.50f, glm::vec3(0.7f, 0.7f, 0.11f));
+			RenderText(TextShader, L"HE MAT TROI", 25.0f, SCREEN_HEIGHT - 30.0f, 0.50f, glm::vec3(0.7f, 0.7f, 0.11f));
 			RenderText(TextShader, L"SAO CHU: 1 (MAT TROI) ", 25.0f, SCREEN_HEIGHT - 55.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
 			RenderText(TextShader, L"HANH TINH: 8 (HOAC LA 9) ", 25.0f, SCREEN_HEIGHT - 80.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
 			RenderText(TextShader, L"VE TINH: 415 ", 25.0f, SCREEN_HEIGHT - 105.0f, 0.35f, glm::vec3(0.7f, 0.7f, 0.11f));
@@ -958,7 +960,7 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
 	{
 		PlanetView = 5;
-		Info.Name = L"SAO MOC	";
+		Info.Name = L"SAO MOC";
 		Info.OrbitSpeed = L"13,07";
 		Info.Mass = L"1876.64328";
 		Info.Gravity = L"2.55";
